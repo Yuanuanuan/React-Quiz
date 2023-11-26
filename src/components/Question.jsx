@@ -5,6 +5,7 @@ import Answers from './Answers.jsx';
 import QUESTIONS from '../questions.js';
 
 export default function Question({ index, onSelectAnswer, onSkipAnswer }) {
+  // 儲存使用者點擊的答案及判斷對錯
   const [answer, setAnswer] = useState({
     selectedAnswer: '',
     isCorrect: null,
@@ -12,6 +13,7 @@ export default function Question({ index, onSelectAnswer, onSkipAnswer }) {
 
   let timer = 10000;
 
+  // 如果沒有選擇 就停1秒
   if (answer.selectedAnswer) {
     timer = 1000;
   }
@@ -20,6 +22,7 @@ export default function Question({ index, onSelectAnswer, onSkipAnswer }) {
     timer = 2000;
   }
 
+  // 處理使用者選擇答案
   function handleSelectAnswer(answer) {
     setAnswer({
       selectedAnswer: answer,
