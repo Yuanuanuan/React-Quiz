@@ -1,30 +1,41 @@
 import { useState, useCallback } from "react";
 
-import Question from "./Question";
-import Summary from "./Summary";
-import QUESTIONS from "../questions";
+import QUESTIONS from "../questions.js";
+import Question from "./Question.jsx";
+import Summary from "./Summary.jsx";
 
 export default function Quiz() {
   const [userAnswers, setUserAnswers] = useState([]);
 
-  // 用使用者回答的答案數量來判斷現在第幾題
   const activeQuestionIndex = userAnswers.length;
-  const quizComplete = activeQuestionIndex === QUESTIONS.length;
+  const quizIsComplete = activeQuestionIndex === QUESTIONS.length;
 
-  const handleSelectAnswer = useCallback((answer) => {
-    setUserAnswers((prevAnswer) => [...prevAnswer, answer]);
-  }, []);
+  const handleSelectAnswer = useCallback(function handleSelectAnswer(
+    selectedAnswer
+  ) {
+    setUserAnswers((prevUserAnswers) => {
+      return [...prevUserAnswers, selectedAnswer];
+    });
+  },
+  []);
 
-  let content = (
-    <Question
-      activeQuestionIndex={activeQuestionIndex}
-      onSelectAnswer={handleSelectAnswer}
-    />
+  const handleSkipAnswer = useCallback(
+    () => handleSelectAnswer(null),
+    [handleSelectAnswer]
   );
 
-  if (quizComplete) {
-    content = <Summary />;
+  if (quizIsComplete) {
+    return <Summary userAnswers={userAnswers} />;
   }
 
-  return <section id="quiz">{content}</section>;
+  return (
+    <div id="quiz">
+      <Question
+        key={activeQuestionIndex}
+        index={activeQuestionIndex}
+        onSelectAnswer={handleSelectAnswer}
+        onSkipAnswer={handleSkipAnswer}
+      />
+    </div>
+  );
 }
