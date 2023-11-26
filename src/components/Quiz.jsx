@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 
 import Question from "./Question";
 import Summary from "./Summary";
@@ -11,13 +11,9 @@ export default function Quiz() {
   const activeQuestionIndex = userAnswers.length;
   const quizComplete = activeQuestionIndex === QUESTIONS.length;
 
-  const handleSelectAnswer = (answer) => {
+  const handleSelectAnswer = useCallback((answer) => {
     setUserAnswers((prevAnswer) => [...prevAnswer, answer]);
-  };
-
-  useEffect(() => {
-    console.log(userAnswers);
-  }, [userAnswers]);
+  }, []);
 
   let content = (
     <Question
